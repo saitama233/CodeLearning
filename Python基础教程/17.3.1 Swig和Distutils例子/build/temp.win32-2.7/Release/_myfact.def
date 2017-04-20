@@ -1,0 +1,3 @@
+LIBRARY _myfact.pyd
+EXPORTS
+init_myfact
