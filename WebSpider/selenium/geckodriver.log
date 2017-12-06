@@ -1,0 +1,60 @@
+1506585326005	geckodriver	INFO	geckodriver 0.19.0
+1506585326072	geckodriver	INFO	Listening on 127.0.0.1:59081
+1506585327174	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.tTtfpUuot26A"
+1506585331493	Marionette	INFO	Enabled via --marionette
+1506585339326	Marionette	INFO	Listening on port 33455
+JavaScript error: chrome://marionette/content/server.js, line 337: NS_ERROR_SOCKET_ADDRESS_IN_USE: Component returned failure code: 0x804b0036 (NS_ERROR_SOCKET_ADDRESS_IN_USE) [nsIServerSocket.initSpecialConnection]
+1506585339449	Marionette	WARN	TLS certificate errors will be ignored for this session
+1506585339716	Marionette	DEBUG	loaded listener.js
+1506585340124	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1506585346566	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1506585346566	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+1506585431563	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "https://www.python.org/"
+1506585431600	Marionette	DEBUG	Received DOM event "pageshow" for "https://www.python.org/"
+1506586365784	geckodriver	INFO	geckodriver 0.19.0
+1506586365794	geckodriver	INFO	Listening on 127.0.0.1:53289
+1506586366986	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.f4Lkif869ubk"
+1506586377986	Marionette	INFO	Enabled via --marionette
+1506586384891	Marionette	INFO	Listening on port 35979
+JavaScript error: chrome://marionette/content/server.js, line 337: NS_ERROR_SOCKET_ADDRESS_IN_USE: Component returned failure code: 0x804b0036 (NS_ERROR_SOCKET_ADDRESS_IN_USE) [nsIServerSocket.initSpecialConnection]
+1506586384934	Marionette	WARN	TLS certificate errors will be ignored for this session
+1506586384980	Marionette	DEBUG	loaded listener.js
+1506586385027	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1506586388746	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1506586388747	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+1506586475371	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "https://www.python.org/"
+1506586475384	Marionette	DEBUG	Received DOM event "pageshow" for "https://www.python.org/"
+1507880481117	geckodriver	INFO	geckodriver 0.19.0
+1507880481138	geckodriver	INFO	Listening on 127.0.0.1:59099
+1507880482302	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.ksMsnvvqswZU"
+1507880515116	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1507880541824	Marionette	INFO	Enabled via --marionette
+1507880585942	Marionette	INFO	Listening on port 45112
+1507880661946	geckodriver	INFO	geckodriver 0.19.0
+1507880663039	geckodriver	INFO	Listening on 127.0.0.1:47400
+1507880664797	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.FByAXRRAlwWA"
+1507880674799	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1507880678387	Marionette	INFO	Enabled via --marionette
+1507880692393	Marionette	INFO	Listening on port 42026
+1507880692571	Marionette	WARN	TLS certificate errors will be ignored for this session
+1507880692780	Marionette	DEBUG	Register listener.js for window 2147483649
+1507880693051	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1507880696410	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1507880696411	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+1507880781212	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "https://www.python.org/"
+1507880781238	Marionette	DEBUG	Received DOM event "pageshow" for "https://www.python.org/"
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+[Child 31185] WARNING: pipe error (3): Connection reset by peer: file /build/firefox-l1g98U/firefox-56.0+build6/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 353
+1507880861869	geckodriver	INFO	geckodriver 0.19.0
+1507880861875	geckodriver	INFO	Listening on 127.0.0.1:53004
+1507880863196	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-profile" "/tmp/rust_mozprofile.MNqsr4lV8plp"
+1507880864783	addons.xpi	WARN	Error parsing extensions state: [Exception... "Component returned failure code: 0x80520012 (NS_ERROR_FILE_NOT_FOUND) [amIAddonManagerStartup.readStartupData]"  nsresult: "0x80520012 (NS_ERROR_FILE_NOT_FOUND)"  location: "JS frame :: resource://gre/modules/addons/XPIProvider.jsm :: loadExtensionState :: line 1554"  data: no] Stack trace: loadExtensionState()@resource://gre/modules/addons/XPIProvider.jsm:1554 < getInstallState()@resource://gre/modules/addons/XPIProvider.jsm:1589 < checkForChanges()@resource://gre/modules/addons/XPIProvider.jsm:3109 < startup()@resource://gre/modules/addons/XPIProvider.jsm:2188 < callProvider()@resource://gre/modules/AddonManager.jsm:269 < _startProvider()@resource://gre/modules/AddonManager.jsm:739 < startup()@resource://gre/modules/AddonManager.jsm:906 < startup()@resource://gre/modules/AddonManager.jsm:3090 < observe()@jar:file:///usr/lib/firefox/omni.ja!/components/addonManager.js:65
+1507880865832	Marionette	INFO	Enabled via --marionette
+1507880873696	Marionette	INFO	Listening on port 41837
+1507880874141	Marionette	WARN	TLS certificate errors will be ignored for this session
+1507880874199	Marionette	DEBUG	Register listener.js for window 2147483649
+1507880874294	Marionette	DEBUG	Received DOM event "beforeunload" for "about:blank"
+1507880875840	Marionette	DEBUG	Received DOM event "pagehide" for "about:blank"
+1507880875841	Marionette	DEBUG	Received DOM event "unload" for "about:blank"
+1507880961323	Marionette	DEBUG	Received DOM event "DOMContentLoaded" for "https://www.python.org/"
+1507880961342	Marionette	DEBUG	Received DOM event "pageshow" for "https://www.python.org/"

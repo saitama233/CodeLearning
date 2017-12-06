@@ -1,0 +1,12 @@
+[INFO  - 2017-12-05T12:09:45.096Z] GhostDriver - Main - running on port 52596
+[INFO  - 2017-12-05T12:09:45.196Z] Session [2e942c20-d9b5-11e7-ba11-b570c8b35211] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2017-12-05T12:09:45.199Z] Session [2e942c20-d9b5-11e7-ba11-b570c8b35211] - page.customHeaders:  - {}
+[INFO  - 2017-12-05T12:09:45.199Z] Session [2e942c20-d9b5-11e7-ba11-b570c8b35211] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2017-12-05T12:09:45.199Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: 2e942c20-d9b5-11e7-ba11-b570c8b35211
+[ERROR - 2017-12-05T12:09:53.460Z] Session [2e942c20-d9b5-11e7-ba11-b570c8b35211] - page.onError - msg: TypeError: undefined is not an object (evaluating 'a.last().offset().top')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2017-12-05T12:09:53.461Z] Session [2e942c20-d9b5-11e7-ba11-b570c8b35211] - page.onError - stack:
+  onscroll (https://img3.doubanio.com/f/movie/22383b47cc5fd310b6ca1ce45521df1731847bfe/js/movie/genrerank.js:1)
+
+  phantomjs://platform/console++.js:263 in error
