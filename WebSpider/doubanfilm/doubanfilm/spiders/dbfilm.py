@@ -1,5 +1,6 @@
 #coding=utf8
 
+import json
 import sys
 import re
 import scrapy
@@ -24,21 +25,56 @@ class Myspider(scrapy.Spider):
         yield request
 
     def gettype_url(self, response):
-        dbitem = typepageurl()
         htm = BeautifulSoup(response.text, "lxml")
         urls = htm.find('div', class_="types").find_all('a')
         # for url in urls:
-        typeurl = self.base_url + urls[0]['href'] 
+        typeurl = self.base_url + urls[0]['href']
             # print typeurl
-        request = Request(url=typeurl, headers=self.headers, callback=self.get_items)
-        request.meta['PhantomJS'] = True
-        yield request
+        parse = "JSON"
+        if parse == "JSON":
+            # pattern = re.compile(r'type=(.*?)\&interval')
+            pattern = re.compile(r'type=(.*?)&interval')
+            typenum = re.findall(pattern, typeurl)
+            jsonpage = "https://movie.douban.com/j/chart/top_list?type=" + typenum[0] + "&interval_id=100:90&action=&start=0&limit=1000"
+            request = Request(url=jsonpage, headers=self.headers, callback=self.get_items_json)
+            yield request
+        elif parse == "PhantomJS":
+            request = Request(url=typeurl, headers=self.headers, callback=self.get_items_phantomjs)
+            request.meta['PhantomJS'] = True
+            yield request
 
-    def get_items(self, response):
+    def get_items_json(self, response):
+        item = doubanfilmitem()
+        items = json.loads(response.text)
+        for temp in items:
+            item["name"] = temp["title"]
+            item["url"] = temp["url"]
+            item["img"] = temp["cover_url"]
+            item["crew"]  = "/".join(temp["actors"])
+            types = "/".join(temp["types"])
+            regions = "/".join(temp["regions"])
+            item["misc"] = "/".join([temp["release_date"], regions, types])
+            item["rating"] = temp["score"]
+            item["comment_num"] = str(temp["vote_count"]) + "人评价"
+            tmp = sys.stdout
+            fp = open("output.txt", "a");
+            sys.stdout = fp
+            print "name: " + item["name"].encode('utf-8')
+            print "url: " + item["url"].encode('utf-8')
+            print "img_url: " + item["img"].encode('utf-8')
+            print "rating: " + item["rating"].encode('utf-8')
+            print "crew: " + item["crew"].encode('utf-8')
+            print "misc: " + item["misc"].encode('utf-8')
+            print "rating_num: " + item["comment_num"]
+            sys.stdout = tmp
+            fp.close()
+            yield item
+
+    def get_items_phantomjs(self, response):
         htm = BeautifulSoup(response.text, "lxml").find('div', class_="movie-list-panel pictext")
         items = htm.find_all('div', class_="movie-content")
         for temp in items:
-            item = doubanfilmitem() 
+            item = doubanfilmitem()
             item['name'] = temp.find('span', class_='movie-name-text').a.get_text()
             item['url'] = str(temp.find('a')['href'])
             if temp.find('img') != None:
