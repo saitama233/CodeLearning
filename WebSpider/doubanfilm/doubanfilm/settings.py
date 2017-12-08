@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#coding=utf-8
 
 # Scrapy settings for doubanfilm project
 #
@@ -94,9 +94,10 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    # 'doubanfilm.middlewares.MyCustomDownloaderMiddleware': 543,
     'doubanfilm.middlewares.JSMiddleware.PhantomJSMiddleware':100,
     'doubanfilm.middlewares.random_user_agent.random_user_agent':50,
+    # 'doubanfilm.middlewares.random_proxy.randomproxy':80,
+
 }
 
 # Enable or disable extensions
@@ -131,3 +132,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTP_PROXY = 'http://127.0.0.1:9050' # 使用Tor
