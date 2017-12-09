@@ -7,6 +7,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 
+# 都是测试滚动的JavaScript，不过只有jsb配合循环能用
 jsp = """
 function scrollToBottom() {
     var Height = document.body.clientHeight,
@@ -56,6 +57,7 @@ class PhantomJSMiddleware(object):
             # action = ActionChains(driver)
             # action.click()
             # element = driver.find_element_by_tag_name("body")
+            # 让页面滚动到最下方，否则一些信息无法加载，方法不太好
             for i in range(100):
                 # element.send_keys(Keys.PAGE_DOWN)
                 # action.send_keys(Keys.ARROW_DOWN)

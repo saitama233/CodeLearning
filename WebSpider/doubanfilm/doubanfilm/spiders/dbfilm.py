@@ -16,20 +16,24 @@ class Myspider(scrapy.Spider):
     base_url = 'https://movie.douban.com/'
 
 #   cookies = {'__utmz': '223695111.1510210510.1.1.utmcsr', 'bid': 'rAWM3eO1Ams', '_pk_ses.100001.4cf6': '*', '_pk_id.100001.4cf6': 'bb5e1837bf02623e.1510210510.1.1510212279.1510210510.', '__utma': '223695111.1984115178.1510210510.1510210510.1510210510.1', '__utmb': '223695111.0.10.1510210510', '__utmc': '223695111'}
+    # 这里的User-Agent应该没有用上，因为之后调用了中间件重新给headers赋值了
     headers = {
         'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'
     }
 
+    # 向排行榜主页面发出请求
     def start_requests(self):
         request = Request(url=self.url, headers=self.headers, callback=self.gettype_url)
         yield request
 
+    # 从主页面的response里解析出每个类型排行榜的url
     def gettype_url(self, response):
         htm = BeautifulSoup(response.text, "lxml")
         urls = htm.find('div', class_="types").find_all('a')
         for url in urls:
             typeurl = self.base_url + url['href']
             # print typeurl
+            # parse相当于一个开关，控制每个类型页面是直接获取JSON还是使用selenium+PhantomJS的方式 
             parse = "JSON"
             if parse == "JSON":
             # pattern = re.compile(r'type=(.*?)\&interval')
@@ -43,6 +47,7 @@ class Myspider(scrapy.Spider):
                 request.meta['PhantomJS'] = True
                 yield request
 
+    # 使用JSON解析页面的话使用这个函数来提取元素
     def get_items_json(self, response):
         item = doubanfilmitem()
         items = json.loads(response.text)
@@ -70,6 +75,7 @@ class Myspider(scrapy.Spider):
             fp.close()
             yield item
 
+    # 使用selenium+PhantomJS解析页面的话使用这个函数来提取元素
     def get_items_phantomjs(self, response):
         htm = BeautifulSoup(response.text, "lxml").find('div', class_="movie-list-panel pictext")
         items = htm.find_all('div', class_="movie-content")

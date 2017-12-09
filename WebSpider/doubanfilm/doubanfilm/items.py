@@ -7,6 +7,7 @@
 
 import scrapy
 
+# 没有用到
 class typepageurl(scrapy.Item):
     # typeurl
     url = scrapy.Field()

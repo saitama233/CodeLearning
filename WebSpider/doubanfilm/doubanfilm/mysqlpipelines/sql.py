@@ -12,6 +12,7 @@ cnx = mysql.connector.connect(user=MYSQL_USER, password=MYSQL_PASSWORD,
 cur = cnx.cursor(buffered=True)
 
 class sqlobj():
+    # 把item存储到数据库
     @classmethod
     def insert_douban_item(cls, name, url, img, crew, misc, 
                            rating, comment_num):
@@ -28,6 +29,7 @@ class sqlobj():
         cur.execute(insertsql, values)
         cnx.commit()
 
+    # 检查item是否已经存在
     @classmethod
     def search_name(cls, url):
         sql = "SELECT EXISTS(SELECT 1 FROM dbfilm_type WHERE url=%(url)s)"
