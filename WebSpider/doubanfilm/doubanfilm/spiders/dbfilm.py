@@ -27,21 +27,21 @@ class Myspider(scrapy.Spider):
     def gettype_url(self, response):
         htm = BeautifulSoup(response.text, "lxml")
         urls = htm.find('div', class_="types").find_all('a')
-        # for url in urls:
-        typeurl = self.base_url + urls[0]['href']
+        for url in urls:
+            typeurl = self.base_url + url['href']
             # print typeurl
-        parse = "JSON"
-        if parse == "JSON":
+            parse = "JSON"
+            if parse == "JSON":
             # pattern = re.compile(r'type=(.*?)\&interval')
-            pattern = re.compile(r'type=(.*?)&interval')
-            typenum = re.findall(pattern, typeurl)
-            jsonpage = "https://movie.douban.com/j/chart/top_list?type=" + typenum[0] + "&interval_id=100:90&action=&start=0&limit=1000"
-            request = Request(url=jsonpage, headers=self.headers, callback=self.get_items_json)
-            yield request
-        elif parse == "PhantomJS":
-            request = Request(url=typeurl, headers=self.headers, callback=self.get_items_phantomjs)
-            request.meta['PhantomJS'] = True
-            yield request
+                pattern = re.compile(r'type=(.*?)&interval')
+                typenum = re.findall(pattern, typeurl)
+                jsonpage = "https://movie.douban.com/j/chart/top_list?type=" + typenum[0] + "&interval_id=100:90&action=&start=0&limit=1000"
+                request = Request(url=jsonpage, headers=self.headers, callback=self.get_items_json)
+                yield request
+            elif parse == "PhantomJS":
+                request = Request(url=typeurl, headers=self.headers, callback=self.get_items_phantomjs)
+                request.meta['PhantomJS'] = True
+                yield request
 
     def get_items_json(self, response):
         item = doubanfilmitem()
