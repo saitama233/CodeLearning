@@ -32,7 +32,7 @@ int csopen(char *name, int oflag)
     }
     sprintf(buf, " %d", oflag);
     iov[0].iov_base = CL_OPEN " ";
-    iov[0].iov_len = strlen(CLOPEN) + 1;
+    iov[0].iov_len = strlen(CL_OPEN) + 1;
     iov[1].iov_base = name;
     iov[1].iov_len = strlen(name);
     iov[2].iov_base = buf;

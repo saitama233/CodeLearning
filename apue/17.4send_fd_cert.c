@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "apue.h"
 #include <sys/socket.h>
 
@@ -42,8 +43,8 @@ int send_fd(int fd, int fd_to_send)
         if (cmptr == NULL && (cmptr = malloc(CONTROLLEN)) == NULL)
             return(-1);
         msg.msg_control = cmptr;
-        msg.msg_controllen = CONTROLLEN
-            cmp = cmptr;
+        msg.msg_controllen = CONTROLLEN;
+        cmp = cmptr;
         cmp->cmsg_level = SOL_SOCKET;
         cmp->cmsg_type = SCM_RIGHTS;
         cmp->cmsg_len = RIGHTSLEN;

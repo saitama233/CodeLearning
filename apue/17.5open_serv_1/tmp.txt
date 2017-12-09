@@ -1,0 +1,4 @@
+gcc -g main_client.c csopen.c ../17.2fd_pipe.c ../17.4recv_fd.c -o open
+gcc -g main_server.c handle_request.c buf_args.c cli_args.c ../17.4send_err.c ../17.4send_fd.c ../14.7readn_writen.c -o opend
+./open
+You have succeeded to transmit the fd

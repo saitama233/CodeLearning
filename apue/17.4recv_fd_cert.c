@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "apue.h"
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -21,10 +22,10 @@
 
 static struct cmsghdr   *cmptr = NULL;
 
-int recv_udf(int fd, uid_t *uidptr, ssize_t (*userfunc)(int, const void *, size_t))
+int recv_ufd(int fd, uid_t *uidptr, ssize_t (*userfunc)(int, const void *, size_t))
 {
     struct cmsghdr      *cmp;
-    struct CREADSTRUCT  *credp;
+    struct CREDSTRUCT   *credp;
     char                *ptr;
     char                buf[MAXLINE];
     struct iovec        iov[1];

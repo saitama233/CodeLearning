@@ -26,7 +26,7 @@ ssize_t
 writen(int fd, const void *ptr, size_t n)
 {
     size_t  nleft;
-    ssize_t nwritten;
+    ssize_t nwriten;
 
     nleft = n;
     while (nleft > 0) {
@@ -35,10 +35,10 @@ writen(int fd, const void *ptr, size_t n)
                 return(-1);
             else
                 break;
-        } else if (nwritten == 0) {
+        } else if (nwriten == 0) {
             break;
         }
-        nleft -= nwritten;
+        nleft -= nwriten;
         ptr += nwriten;
     }
     return(n - nleft);

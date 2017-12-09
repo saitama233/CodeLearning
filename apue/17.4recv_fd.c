@@ -39,7 +39,7 @@ int recv_fd(int fd, ssize_t (*userfunc)(int, const void *, size_t))
                     err_dump("message format error");
                 status = *ptr & 0xFF;
                 if (status == 0) {
-                    if (msg.msg_contrllen < CONTROLLEN)
+                    if (msg.msg_controllen < CONTROLLEN)
                         err_dump("status = 0 but no fd");
                     newfd = *(int *)CMSG_DATA(cmptr);
                 } else {
