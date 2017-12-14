@@ -23,7 +23,7 @@ int cli_conn(const char *name)
     sprintf(un.sun_path, "%s%05ld", CLI_PATH, (long)getpid());
     len = offsetof(struct sockaddr_un, sun_path) + strlen(un.sun_path);
     unlink(un.sun_path);
-    if (bind(fd, (struct sockaddr_un)&un, len) < 0) {
+    if (bind(fd, (struct sockaddr *)&un, len) < 0) {
         rval = -2;
         goto errout;
     }
@@ -46,7 +46,7 @@ int cli_conn(const char *name)
 errout:
     err = errno;
     close(fd);
-    if (df_unlink)
+    if (do_unlink)
         unlink(un.sun_path);
     errno = err;
     return(rval);

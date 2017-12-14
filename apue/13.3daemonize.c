@@ -10,10 +10,7 @@ daemonize(const char *cmd)
     pid_t               pid;
     struct rlimit       rl;
     struct sigaction    sa;
-<<<<<<< HEAD
     printf("into daemonize\n");
-=======
->>>>>>> e18b7fb... 练习代码
 
     umask(0);
     if (getrlimit(RLIMIT_NOFILE, &rl) < 0)
@@ -47,17 +44,9 @@ daemonize(const char *cmd)
     fd2 = dup(0);
 
     openlog(cmd, LOG_CONS, LOG_DAEMON);
-<<<<<<< HEAD
-
-=======
->>>>>>> e18b7fb... 练习代码
     if (fd0 != 0 || fd1 != 1 || fd2 != 2) {
         syslog(LOG_ERR, "unexpected file descriptors %d %d %d",
                 fd0, fd1, fd2);
         exit(1);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> e18b7fb... 练习代码
 }
