@@ -1,3 +1,4 @@
+#include "apue.h"
 #include "apue_db.h"
 #include <fcntl.h>
 #include <stdarg.h>
@@ -60,16 +61,17 @@ static void     _db_writeptr(DB *, off_t, off_t);
 
 DBHANDLE db_open(const char *pathname, int oflag, ...)
 {
-    DB      *db;
-    int     len, mode;
-    size_t  i;
-    char    asciiptr[PTR_SZ + 1],
-            hash[(NHASH_DEF + 1) * PTR_SZ + 2];
+    DB          *db;
+    int         len, mode;
+    size_t      i;
+    char        asciiptr[PTR_SZ + 1],
+                hash[(NHASH_DEF + 1) * PTR_SZ + 2];
     struct stat statbuf;
 
     len = strlen(pathname);
     if ((db = _db_alloc(len)) == NULL)
         err_dump("db_open: _db_alloc error for DB");
+    // 之前在_db_alloc里没有写return语句,导致db未赋值，没有空间，下面的赋值会出现segmentation fault错误：找了两个小时
     db->nhash = NHASH_DEF;
     db->hashoff = HASH_OFF;
     strcpy(db->name, pathname);
@@ -78,6 +80,7 @@ DBHANDLE db_open(const char *pathname, int oflag, ...)
     if (oflag & O_CREAT) {
         va_list ap;
         va_start(ap, oflag);
+        mode = va_arg(ap, int);
         va_end(ap);
         db->idxfd = open(db->name, oflag, mode);
         strcpy(db->name + len, ".dat");
@@ -95,14 +98,16 @@ DBHANDLE db_open(const char *pathname, int oflag, ...)
     if ((oflag & (O_CREAT | O_TRUNC)) == (O_CREAT | O_TRUNC)) {
         if (writew_lock(db->idxfd, 0, SEEK_SET, 0) < 0)
             err_dump("db_open: writew_lock error");
-        if (fstat(fd->idxfd, &statbuff) < 0)
+        if (fstat(db->idxfd, &statbuf) < 0)
             err_sys("db_open: fstat error");
-        if (statbuff.st_size == 0) {
+        if (statbuf.st_size == 0) {
             sprintf(asciiptr, "%*d", PTR_SZ, 0);
             hash[0] = 0;
             for (i = 0; i < NHASH_DEF + 1; i++)
                 strcat(hash, asciiptr);
             strcat(hash, "\n");
+            // 最初忘了下面的语句，导致i只有138，而不是967，少写了很多值，最后的回车也没写进文件，发生Aborted错误：找了2小时
+            i = strlen(hash);
             if (write(db->idxfd, hash, i) != i)
                 err_dump("db_open: index file init write error");
         }
@@ -128,6 +133,7 @@ static DB *_db_alloc(int namelen)
         err_dump("_db_alloc: malloc error for index buffer");
     if ((db->datbuf = malloc(DATLEN_MAX + 2)) == NULL)
         err_dump("_db_alloc: malloc error for data buffer");
+    return(db);
 }
 
 void db_close(DBHANDLE h)
@@ -239,7 +245,7 @@ static off_t _db_readidx(DB *db, off_t offset)
         err_dump("_db_readidx: readv error of index record");
     }
     asciiptr[PTR_SZ] = 0;
-    db->ptrval = toll(asciiptr);
+    db->ptrval = atol(asciiptr);
 
     asciilen[IDXLEN_SZ] = 0;
     if ((db->idxlen = atoi(asciilen)) < IDXLEN_MIN ||
@@ -263,7 +269,7 @@ static off_t _db_readidx(DB *db, off_t offset)
 
     if ((db->datoff = atol(ptr1)) < 0)
         err_dump("_db_readidx: starting offset < 0");
-    if ((db->dattlen = atol(ptr2)) <= 0 || db->datlen > DATLEN_MAX)
+    if ((db->datlen = atol(ptr2)) <= 0 || db->datlen > DATLEN_MAX)
         err_dump("_db_readidx: invalid length");
     return(db->ptrval);
 }
@@ -411,7 +417,7 @@ int db_store(DBHANDLE h, const char *key, const char *data, int flag)
     if (_db_find_and_lock(db, key, 1) < 0) {
         if (flag == DB_REPLACE) {
             rc = -1;
-            db->cnt_store++;
+            db->cnt_storerr++;
             errno = ENOENT;
             goto doreturn;
         }
@@ -491,7 +497,7 @@ void db_rewind(DBHANDLE h)
 
     offset = (db->nhash + 1) * PTR_SZ;
 
-    if ((db->idxoff = lseek(db->idx, offset+1, SEEK_SET)) == -1)
+    if ((db->idxoff = lseek(db->idxfd, offset+1, SEEK_SET)) == -1)
         err_dump("db_rewind: lseek error");
 }
 
