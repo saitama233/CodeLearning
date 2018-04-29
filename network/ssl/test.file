@@ -1,0 +1,10 @@
+20180421:6.5h
+openssl生成服务器及客户端证书
+ssl_client.c
+ssl_server.c
+20180422:6h
+将生成证书写成shell脚本
+sed用法:脚本中编辑文件
+调试单向验证
+makefile
+添加双向验证
