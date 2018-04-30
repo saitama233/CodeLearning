@@ -1,5 +1,3 @@
-// gcc -DMODE=2 -o ssl_client ssl_client.c -lssl -lcrypto
-// MODE定义为2表示开启双向认证，否则只为单向认证
 // Usage: ssl_client ip port
 
 #include <stdio.h>
@@ -53,20 +51,23 @@ int main(int argc, char **argv)
         printf("SSL_CTX_load_verify_locations success\n");
     }
 
-#if MODE == 1
-#warning SSL_VERIFY_NONE
+#if CMODE == CLIENT_SSL_VERIFY_NONE
+#warning client SSL_VERIFY_NONE
+    // 此时服务器可以不发送证书，或发送错误的证书，因为客户端即使验证失败也可以握手成功，可以调用在connect后调用ssl_get_verify_result来查看是否验证成功
     mode = SSL_VERIFY_NONE;
-#elif MODE == 2
-#warning SSL_VERIFY_PEER
+#elif CMODE == CLIENT_SSL_VERIFY_PERR
+#warning client SSL_VERIFY_PEER
+    // 此时服务器证书验证失败会导致握手失败
     mode = SSL_VERIFY_PEER;
 #endif
     
-    // 单向验证的时候不需要这个函数
-    // 这个函数要是不调用的话默认就是单向认证
+    // 根据mode设置客户端验证方式
     SSL_CTX_set_verify(ctx, mode, NULL);
 
-#if MODE == 2
-#warning SSL_VERIFY_PEER
+#if SMODE == SERVER_SSL_VERIFY_PEER || SMODE == (SERVER_SSL_VERIFY_PEER|SERVER_SSL_VERIFY_FAIL_IF_NO_PEER_CERT)
+#warning server SSL_VERIFY_PEER
+    // 只有服务器设置了SSL_VERIFY_PEER才需要发送客户端证书
+
     // getcwd()会将当前工作目录的绝对路径复制到参数buffer所指的内存空间中
     getcwd(pwd, 100);
     // 当为根路径的时候（/），需要置为空，否则之后的strcat会出错
@@ -86,6 +87,10 @@ int main(int argc, char **argv)
     getcwd(pwd, 100);
     if (strlen(pwd) == 1)
         pwd[0] = '\0';
+    
+    // 加载客户端私钥密码,这样就不需要每次运行都输入密码了
+    SSL_CTX_set_default_passwd_cb_userdata(ctx, "zxcasd");
+
     // 加载客户端私钥
     printf("call SSL_CTX_use_PrivateKey_file:\n");
     if (SSL_CTX_use_PrivateKey_file(ctx, 
@@ -129,6 +134,11 @@ int main(int argc, char **argv)
         // 可选，就是显示服务器的证书，不调用也不影响之后的连接
         showcerts(ssl);
     }
+    if (SSL_get_verify_result(ssl) == X509_V_OK) {
+        printf("The server sent a certificate "
+                "which verified OK\n");
+    } else
+        printf("The server sent a invalid certificate\n");
     // 接收用户输入的文件名，并打开文件
     printf("Please input the filename which you want to load:\n");
     scanf("%s",filename);

@@ -1,5 +1,3 @@
-// gcc -DMODE=2 -o ssl_server ssl_server.c -lssl -lcrypto
-// MODE定义为2表示双向认证，定义为1表示单向认证
 // Usage: ssl_server port lisnum
 
 #include <stdio.h>
@@ -23,8 +21,9 @@ int main(int argc, char ** argv)
     int     port, lisnum, len;
     SSL_CTX *ctx;
     SSL     *ssl;
-    struct sockaddr_in  serv, cli_addr;
-    int mode;
+    int     mode;
+    int     val;
+    struct  sockaddr_in  serv, cli_addr;
 
     if (argv[1])
         port = atoi(argv[1]);
@@ -52,7 +51,9 @@ int main(int argc, char ** argv)
         exit(1);
     }
 
-#if MODE == 2
+#if SMODE == SERVER_SSL_VERIFY_PEER || \
+    SMODE == (SERVER_SSL_VERIFY_PEER|SERVER_SSL_VERIFY_FAIL_IF_NO_PEER_CERT)
+    // 服务器只有设置了SSL_VERIFY_PEER才需要设置根证书来进行客户端认证
     getcwd(pwd, 100);
     if (strlen(pwd) == 1)
         pwd[0] = '\0';
@@ -66,15 +67,21 @@ int main(int argc, char ** argv)
     }
 #endif
 
-#if MODE == 1
+#if SMODE == SERVER_SSL_VERIFY_NONE
 #warning SSL_VERIFY_NONE
+    // 此时不进行客户端认证
     mode = SSL_VERIFY_NONE;
-#elif MODE == 2
+#elif SMODE == SERVER_SSL_VERIFY_PEER
 #warning SSL_VERIFY_PEER
+    // 请求认证客户端,但此时若是客户端不发送证书也可成功握手
     mode = SSL_VERIFY_PEER;
+#elif SMODE == \
+    (SERVER_SSL_VERIFY_PEER|SERVER_SSL_VERIFY_FAIL_IF_NO_PEER_CERT)
+    // 此时客户端必须发送证书且成功验证才能握手成功
+    mode = SSL_VERIFY_PEER|SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
 #endif
     
-    //这个函数要是不调用的话默认就是单向认证
+    // 根据mode设置服务器验证方式
     SSL_CTX_set_verify(ctx, mode, NULL);
     
     // getcwd()会将当前工作目录的绝对路径复制到参数buffer所指的内存空间中
@@ -96,8 +103,12 @@ int main(int argc, char ** argv)
     getcwd(pwd, 100);
     if (strlen(pwd) == 1)
         pwd[0] = '\0';
+
+    // 加载私钥密码
+    SSL_CTX_set_default_passwd_cb_userdata(ctx, "asdqwe");
+
     // 加载服务器私钥
-    // 感觉是自己用来解密或加密用的
+    // 感觉是自己用来签名用的
     printf("call SSL_CTX_use_PrivateKey_file:\n");
     if (SSL_CTX_use_PrivateKey_file(ctx, 
                 strcat(pwd, "/ca/private/server-key.pem"),
@@ -117,6 +128,13 @@ int main(int argc, char ** argv)
         exit(1);
     } else
         printf("socket created\n");
+
+    // 本是想解决地址复用的问题:(bind error: Address already in use)
+    // 但不清楚为什么没起作用,难道是和ssl有关??
+    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, (void *)&val,sizeof(val)) < 0) {
+        perror("setsockopt error");
+    } else 
+        printf("setsockopt ok!\n");
 
     bzero(&serv, sizeof(serv));
     serv.sin_family = AF_INET;
