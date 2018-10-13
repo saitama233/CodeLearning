@@ -2,3 +2,8 @@
 *.o
 *.obj
 a.out
+network/ssl/ca
+*.tags
+*GPATH
+*GRTAGS
+*GTAGS
